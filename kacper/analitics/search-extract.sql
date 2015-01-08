@@ -1,3 +1,8 @@
+/* Build data on communication corridors (i.e. searches between two locations independent of the direction
+ * Create table search2 with departure and arrival positions sorted numerically. 
+ * If position1 is not a departure position reversed is set.
+ */
+
 DROP TABLE IF EXISTS search2;
 
 CREATE TABLE search2 AS
@@ -11,15 +16,31 @@ SELECT
   children,
   if(departure_position_fk > arrival_position_fk, departure_position_fk, arrival_position_fk) AS position1,
   if(departure_position_fk > arrival_position_fk, arrival_position_fk, departure_position_fk) AS position2,
-  if(departure_position_fk > arrival_position_fk, 0, 1) AS reversed,
-  pname1.name as name1,
-  pname1.country_code as country1,
-  pname2.name as name2,
-  pname2.country_code as country2
+  if(departure_position_fk > arrival_position_fk, 0, 1) AS reversed
 FROM 
   search
-LEFT JOIN named_positions AS pname1
-ON (pname1.position = if(departure_position_fk > arrival_position_fk, departure_position_fk, arrival_position_fk))
-LEFT JOIN named_positions AS pname2
-ON (pname2.position = if(departure_position_fk > arrival_position_fk, arrival_position_fk, departure_position_fk))
+;
+
+/* Table to collect all hubs, largest travel cities
+ */
+DROP TABLE IF EXISTS search3;
+
+CREATE TABLE search3 AS
+SELECT 
+  *
+FROM (
+SELECT 
+  search_id,
+  departure_position_fk AS position
+FROM 
+  search
+  
+UNION ALL
+
+SELECT 
+  search_id,
+  arrival_position_fk
+FROM 
+  search
+) AS search_doubled
 ;

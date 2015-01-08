@@ -1,3 +1,9 @@
+/* This script builds table named_positions based on location, airport, busstation and station tables
+ * We extract position_fk, lat, lon and name. We add country code to better understand where this position is
+ * is_* gets marked if this position is a know airport, but or train station.
+ */
+
+
 DROP TABLE IF EXISTS named_positions;
 
 CREATE TABLE named_positions (
