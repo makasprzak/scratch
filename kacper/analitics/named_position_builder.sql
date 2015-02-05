@@ -36,56 +36,81 @@ SELECT
 FROM location
 LEFT JOIN country
   ON (country.country_id = location.country_fk)
-WHERE position_fk IS NOT NULL;
+WHERE 
+  position_fk IS NOT NULL;
 
 
 INSERT INTO named_positions (
   position,
   name,
+  country_code,
   is_airport,
   lat,
   lon
   )
 SELECT 
-  position_fk,
-  name,
+  airport.position_fk,
+  airport.name,
+  country.code,
   1,
-  lat,
-  lon
+  airport.lat,
+  airport.lon
 FROM airport
-WHERE position_fk IS NOT NULL
-ON DUPLICATE KEY UPDATE is_airport = 1;
+LEFT JOIN location
+  ON (location.location_id = airport.location_fk)
+LEFT JOIN country
+  ON (country.country_id = location.country_fk)
+WHERE 
+  airport.position_fk IS NOT NULL
+ON DUPLICATE KEY 
+  UPDATE is_airport = 1;
 
 INSERT INTO named_positions (
   position,
   name,
+  country_code,
   is_bus,
   lat,
   lon
   )
 SELECT 
-  position_fk,
-  name,
+  busstation.position_fk,
+  busstation.name,
+  country.code,
   1,
-  lat,
-  lon
+  busstation.lat,
+  busstation.lon
 FROM busstation
-WHERE position_fk IS NOT NULL
-ON DUPLICATE KEY UPDATE is_bus = 1;
+LEFT JOIN location
+  ON (location.location_id = busstation.location_fk)
+LEFT JOIN country
+  ON (country.country_id = location.country_fk)
+WHERE 
+  busstation.position_fk IS NOT NULL
+ON DUPLICATE KEY 
+  UPDATE is_bus = 1;
 
 INSERT INTO named_positions (
   position,
   name,
+  country_code,
   is_train,
   lat,
   lon
   )
 SELECT 
-  position_fk,
-  name,
+  station.position_fk,
+  station.name,
+  country.code,
   1,
-  lat,
-  lon
+  station.lat,
+  station.lon
 FROM station
-WHERE position_fk IS NOT NULL
-ON DUPLICATE KEY UPDATE is_train = 1;
+LEFT JOIN location
+  ON (location.location_id = station.location_fk)
+LEFT JOIN country
+  ON (country.country_id = location.country_fk)
+WHERE 
+  station.position_fk IS NOT NULL
+ON DUPLICATE KEY 
+  UPDATE is_train = 1;
