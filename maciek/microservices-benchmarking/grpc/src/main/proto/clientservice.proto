@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option java_package = "com.goeuro.benchmarking.microservices";
+
+package com.goeuro.benchmarking.microservices;
+
+service Service {
+    rpc Call (ServiceRequest) returns (ServerResponse) {}
+}
+
+message ServiceRequest {
+    int32 delayMillis = 1;
+}
+
+message ServerResponse {
+    int64 receivedNanoTime = 1;
+    int64 respondedNanoTime = 2;
+}
