@@ -11,6 +11,11 @@
     <modules>
         <module>embedded-jetty</module>
         <module>embedded-tomcat</module>
+        <module>embedded-undertow</module>
+        <module>spark</module>
+        <module>grpc</module>
+        <module>lib</module>
+        <module>spring-boot-simple-ms</module>
     </modules>
 	
 
